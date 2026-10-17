@@ -1,0 +1,42 @@
+# =========================================================================
+# Google Cloud Build Pipeline for BorderWise AI
+# Builds container image and deploys to Google Cloud Run (Always-Free Tier)
+# =========================================================================
+steps:
+  # 1. Run Automated Golden Benchmark & Invariance Tests
+  - name: 'python:3.12-slim'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        pip install -r requirements.txt
+        PYTHONPATH=. pytest backend/tests/
+        PYTHONPATH=. python evals/run_evals.py
+
+  # 2. Build Container Image with Google Artifact Registry / Cloud Build
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/borderwise-ai:$COMMIT_SHA', '-t', 'gcr.io/$PROJECT_ID/borderwise-ai:latest', '.']
+
+  # 3. Push Container Image to Google Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/borderwise-ai:latest']
+
+  # 4. Deploy to Google Cloud Run (Fully Managed Serverless, $0 Free Tier)
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - 'borderwise-ai'
+      - '--image=gcr.io/$PROJECT_ID/borderwise-ai:latest'
+      - '--region=asia-south1'
+      - '--platform=managed'
+      - '--allow-unauthenticated'
+      - '--memory=512Mi'
+      - '--concurrency=80'
+      - '--min-instances=0'
+      - '--max-instances=10'
+      - '--set-env-vars=GEMINI_MODEL=gemini-3.8'
+
+images:
+  - 'gcr.io/$PROJECT_ID/borderwise-ai:latest'

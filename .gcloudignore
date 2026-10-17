@@ -1,0 +1,8 @@
+.gcloudignore
+.git
+.gitignore
+__pycache__
+*.pyc
+.pytest_cache
+.DS_Store
+.venv

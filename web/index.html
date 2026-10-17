@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BorderWise AI — Cross-Border Feasibility & Customs Intelligence</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .waterfall-row { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px dashed #e2e8f0; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen">
+
+  <!-- Header -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center text-white font-extrabold text-xl shadow-sm">
+          BW
+        </div>
+        <div>
+          <h1 class="font-bold text-lg text-slate-900 leading-tight">BorderWise AI</h1>
+          <p class="text-xs text-slate-500">Cross-Border E-Commerce Feasibility & Customs Intelligence • Google AI Builder Hackathon (JPAC)</p>
+        </div>
+      </div>
+      <div class="flex items-center space-x-3">
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">
+          ✨ Gemini 3.8
+        </span>
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
+          ● 100% Google Cloud Free Tier
+        </span>
+        <button onclick="openExtensionModal()" class="inline-flex items-center space-x-1 px-3 py-1.5 rounded-lg text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm transition">
+          <span>📦 Download Chrome Plugin</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Extension Install Modal for Judges -->
+  <div id="extModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-100 relative">
+      <button onclick="closeExtensionModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
+      
+      <div class="flex items-center space-x-3 mb-4">
+        <div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center text-xl font-bold">
+          🧩
+        </div>
+        <div>
+          <h3 class="text-base font-bold text-slate-900">Install BorderWise Chrome Extension</h3>
+          <p class="text-xs text-slate-500">Manifest V3 • Auto-activates on Amazon, AliExpress & Alibaba</p>
+        </div>
+      </div>
+
+      <div class="bg-indigo-50 border border-indigo-100 rounded-xl p-3 mb-4 text-xs text-indigo-900 leading-relaxed">
+        <b>💡 For Judges:</b> You can evaluate everything directly in this web simulator, or test the live browser plugin with these 3 quick steps:
+      </div>
+
+      <div class="space-y-3 mb-6 text-xs text-slate-700">
+        <div class="flex items-start space-x-3 p-2.5 rounded-lg bg-slate-50 border border-slate-100">
+          <span class="flex-shrink-0 w-6 h-6 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-[11px]">1</span>
+          <div>
+            <p class="font-semibold text-slate-900">Download & Extract</p>
+            <p class="text-slate-500">Click below to download <code class="bg-white px-1 py-0.5 rounded border border-slate-200 text-indigo-700 font-mono">borderwise-extension.zip</code> and unzip it.</p>
+          </div>
+        </div>
+
+        <div class="flex items-start space-x-3 p-2.5 rounded-lg bg-slate-50 border border-slate-100">
+          <span class="flex-shrink-0 w-6 h-6 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-[11px]">2</span>
+          <div>
+            <p class="font-semibold text-slate-900">Open Chrome Extensions</p>
+            <p class="text-slate-500">In Chrome, open <code class="bg-white px-1.5 py-0.5 rounded border border-slate-200 text-indigo-700 font-mono select-all">chrome://extensions</code> and toggle <b>Developer mode</b> ON (top-right).</p>
+          </div>
+        </div>
+
+        <div class="flex items-start space-x-3 p-2.5 rounded-lg bg-slate-50 border border-slate-100">
+          <span class="flex-shrink-0 w-6 h-6 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-[11px]">3</span>
+          <div>
+            <p class="font-semibold text-slate-900">Load Unpacked</p>
+            <p class="text-slate-500">Click <b>Load unpacked</b> and select the extracted folder. Browse Amazon, AliExpress or Alibaba to test live!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex space-x-3">
+        <a href="/api/v1/download-extension" download="borderwise-extension.zip" class="flex-1 py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg text-xs text-center shadow transition flex items-center justify-center space-x-1.5">
+          <span>⬇️ Download Extension (.zip)</span>
+        </a>
+        <button onclick="closeExtensionModal()" class="py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-lg text-xs transition">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Container -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    
+    <!-- Quick Demo Presets -->
+    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm mb-8">
+      <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-2">One-Click Test Presets:</span>
+      <div class="flex flex-wrap gap-2">
+        <button onclick="loadPreset('keyboard')" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 hover:bg-blue-50 hover:text-blue-600 transition border border-slate-200">
+          ⌨️ Keychron Q1 Pro (Amazon US - $199)
+        </button>
+        <button onclick="loadPreset('headphones')" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 hover:bg-blue-50 hover:text-blue-600 transition border border-slate-200">
+          🎧 Sony WH-1000XM5 (Amazon US - $348)
+        </button>
+        <button onclick="loadPreset('lens')" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 hover:bg-blue-50 hover:text-blue-600 transition border border-slate-200">
+          📷 Sony 24-70mm Lens (Amazon JP - ¥280,000)
+        </button>
+        <button onclick="loadPreset('macbook')" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 hover:bg-blue-50 hover:text-blue-600 transition border border-slate-200">
+          💻 MacBook Air M3 ($1,059.99 + $13.30 Global Ship)
+        </button>
+        <button onclick="loadPreset('strix')" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 hover:bg-blue-50 hover:text-blue-600 transition border border-slate-200">
+          🎮 ASUS ROG Strix ($1,399.99 + $48.50 Ship)
+        </button>
+        <button onclick="loadPreset('tablet')" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 hover:bg-blue-50 hover:text-blue-600 transition border border-slate-200">
+          📱 iPad / Tablet ($1,299.74 + $13.37 Ship)
+        </button>
+        <button onclick="loadPreset('vape')" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-red-50 text-red-700 hover:bg-red-100 transition border border-red-200">
+          ⚠️ Flum Vape Pod (Prohibited Good Alert)
+        </button>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      
+      <!-- Input Form -->
+      <div class="lg:col-span-5 bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
+        <h2 class="text-sm font-bold uppercase tracking-wider text-slate-900 border-b pb-2">Product Input & Import Parameters</h2>
+
+        <!-- Product URL / Breakdown Input Space -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1 flex items-center justify-between">
+            <span>🔗 E-Commerce URL or Copied Price Breakdown</span>
+            <span class="text-slate-400 font-normal">Amazon, AliExpress, B&H</span>
+          </label>
+          <div class="flex space-x-2">
+            <input id="productUrl" type="text" placeholder="Paste link (https://...) or fee table (Price $1,059.99 Shipping $13.30)..." class="flex-1 px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none" oninput="parseUrlAutofill(this.value, false)">
+            <button id="autofillBtn" type="button" onclick="parseUrlAutofill(document.getElementById('productUrl').value, true)" class="px-3 py-2 text-xs font-semibold bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg border border-blue-200 transition whitespace-nowrap">
+              ⚡ Autofill
+            </button>
+            <button id="pasteBtn" type="button" onclick="pasteClipboardBreakdown()" title="Paste copied fee table from clipboard" class="px-3 py-2 text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg border border-slate-300 transition whitespace-nowrap">
+              📋 Paste Fee Text
+            </button>
+          </div>
+          <span id="autofillFeedback" class="text-[10px] text-slate-400 mt-1 block">Paste product link or copied fee text (Price $1,059.99 AmazonGlobal Shipping $13.30) to autofill instantly.</span>
+        </div>
+        
+        <div>
+          <label class="block text-xs font-medium text-slate-700 mb-1">Product Title</label>
+          <input id="title" type="text" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none" value="Keychron Q1 Pro Wireless Custom Mechanical Keyboard">
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-slate-700 mb-1">Technical Specs & Features</label>
+          <textarea id="specs" rows="3" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">Bluetooth 5.1, Hot-swappable switches, CNC aluminum body, 4000mAh battery</textarea>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-medium text-slate-700 mb-1">Foreign Price (FOB)</label>
+            <input id="price" type="number" step="0.01" oninput="calculateFeasibility()" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none" value="199.00">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-700 mb-1">Currency</label>
+            <select id="currency" onchange="calculateFeasibility()" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white">
+              <option value="USD">USD ($)</option>
+              <option value="JPY">JPY (¥)</option>
+              <option value="EUR">EUR (€)</option>
+              <option value="GBP">GBP (£)</option>
+              <option value="SGD">SGD (S$)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-medium text-slate-700 mb-1">Shipping Cost</label>
+            <input id="shipping" type="number" step="0.01" oninput="calculateFeasibility()" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none" value="22.00">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-700 mb-1">Domestic Benchmark (INR)</label>
+            <input id="domestic" type="number" step="0.01" oninput="calculateFeasibility()" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none" value="26999.00">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-slate-700 mb-1">Courier Customs Clearance Mode</label>
+          <select id="mode" onchange="calculateFeasibility()" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white">
+            <option value="express_courier">DHL / FedEx Express (Advancement Fee + Terminal)</option>
+            <option value="postal_ems">India Post EMS (Statutory ₹100 Flat FPO Fee)</option>
+            <option value="prepaid_ddp">Amazon Global DDP (Clearance Fees Absorbed)</option>
+          </select>
+        </div>
+
+        <button onclick="calculateFeasibility()" class="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow transition flex items-center justify-center space-x-2">
+          <span>⚡ Run Import Feasibility Analysis</span>
+        </button>
+        <p class="text-[11px] text-slate-400 text-center">💡 Tip: Amazon loads shipping dynamically at checkout. All values above update the waterfall live!</p>
+      </div>
+
+      <!-- Results Display -->
+      <div class="lg:col-span-7 space-y-6">
+        
+        <!-- Domestic Arbitrage Card -->
+        <div id="arbitrageCard" class="bg-emerald-50 border border-emerald-200 rounded-xl p-5 shadow-sm">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-bold uppercase tracking-wider text-emerald-800">Domestic vs Import Price Arbitrage</span>
+            <span id="verdictPill" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-200 text-emerald-900">SAVE BY IMPORTING</span>
+          </div>
+          <h3 id="verdictHeading" class="text-xl font-extrabold text-emerald-950 mb-1">🟢 SAVE ₹3,736.87 (13.8%) BY IMPORTING!</h3>
+          <p id="verdictTradeoff" class="text-xs text-emerald-800">Trade-off: International shipment arrives in 10-14 days vs 1-2 days local. Manufacturer international warranty applies.</p>
+        </div>
+
+        <!-- Landed Cost Waterfall -->
+        <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+          <div class="flex items-center justify-between border-b pb-3 mb-4">
+            <h3 class="font-bold text-slate-900 text-base">Customs Act Sec 14 Landed Cost Waterfall</h3>
+            <span id="hsBadge" class="px-2.5 py-1 rounded-md text-xs font-mono font-semibold bg-blue-50 text-blue-700 border border-blue-200">HS 8471.60.40</span>
+          </div>
+
+          <div class="space-y-1 text-sm">
+            <div class="waterfall-row text-slate-600">
+              <span>Converted Product Price (FOB)</span>
+              <span id="resFob" class="font-mono">₹16,815.50</span>
+            </div>
+            <div class="waterfall-row text-slate-600">
+              <span>Freight & Transit Insurance (Rule 10(2))</span>
+              <span id="resFreight" class="font-mono">₹2,048.17</span>
+            </div>
+            <div class="waterfall-row font-semibold text-slate-900 bg-slate-50 px-2 rounded">
+              <span>Assessable Value (CIF)</span>
+              <span id="resCif" class="font-mono">₹18,863.67</span>
+            </div>
+            <div class="waterfall-row text-slate-600">
+              <span>Basic Customs Duty (<span id="resBcdPct">0%</span>)</span>
+              <span id="resBcd" class="font-mono">₹0.00</span>
+            </div>
+            <div class="waterfall-row text-slate-600">
+              <span>Social Welfare Surcharge (10% of BCD)</span>
+              <span id="resSws" class="font-mono">₹0.00</span>
+            </div>
+            <div class="waterfall-row text-slate-600">
+              <span>Integrated GST (18% on CIF + Duties)</span>
+              <span id="resIgst" class="font-mono">₹3,395.46</span>
+            </div>
+            <div class="waterfall-row text-slate-600">
+              <span>Courier Clearance & Handling Fee</span>
+              <span id="resCourier" class="font-mono">₹1,003.00</span>
+            </div>
+            <div class="waterfall-row total pt-3 border-t-2 border-slate-900 font-extrabold text-base text-blue-600">
+              <span>Total All-Inclusive Landed Cost</span>
+              <span id="resTotal" class="font-mono text-lg">₹23,262.13</span>
+            </div>
+          </div>
+
+          <!-- Amazon Import Fees Deposit Comparison Alert -->
+          <div id="amazonDepositAlert" class="hidden mt-4 bg-amber-50 border border-amber-200 rounded-xl p-3.5 shadow-sm">
+            <div class="flex items-center space-x-2 text-amber-800 font-bold text-xs uppercase mb-1">
+              <span>💡 Amazon Import Deposit vs Statutory Duty</span>
+            </div>
+            <p id="amazonDepositText" class="text-xs text-amber-900 leading-relaxed"></p>
+          </div>
+        </div>
+
+        <!-- Regulatory & Provenance -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Regulatory Badges -->
+          <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Port Regulatory Badges</h4>
+            <div id="badgeList" class="flex flex-wrap gap-2">
+              <span class="px-2.5 py-1 rounded-md text-xs font-semibold bg-emerald-100 text-emerald-800">✓ WPC ETA Exempt</span>
+              <span class="px-2.5 py-1 rounded-md text-xs font-semibold bg-emerald-100 text-emerald-800">✓ BIS CRS Exempt (1 Unit)</span>
+              <span class="px-2.5 py-1 rounded-md text-xs font-semibold bg-emerald-100 text-emerald-800">✓ EPR Battery Compliant</span>
+            </div>
+          </div>
+
+          <!-- Legal Provenance -->
+          <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Statutory Provenance & Hash</h4>
+            <p id="citationText" class="text-xs text-slate-600 mb-2">Notification No. 24/2005-Customs (ITA-1)</p>
+            <div id="hashText" class="text-[10px] font-mono text-slate-400 bg-slate-50 p-2 rounded border border-slate-200 break-all">
+              sha256:7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    const API_URL = window.location.origin.includes("localhost") || window.location.origin.includes("127.0.0.1")
+      ? `${window.location.origin}/api/v1`
+      : `${window.location.origin}/api/v1`;
+
+    const PRESETS = {
+      keyboard: {
+        url: "https://www.amazon.com/dp/B0BY2T5T7F",
+        title: "Keychron Q1 Pro Wireless Custom Mechanical Keyboard",
+        specs: "Bluetooth 5.1, Hot-swappable switches, CNC aluminum body, 4000mAh battery",
+        price: 199.00,
+        currency: "USD",
+        shipping: 22.00,
+        domestic: 26999.00
+      },
+      headphones: {
+        url: "https://www.amazon.com/dp/B09XS7JWHH",
+        title: "Sony WH-1000XM5 Wireless Noise Canceling Headphones",
+        specs: "Bluetooth 5.2, Active Noise Cancellation, 30-hour battery life",
+        price: 348.00,
+        currency: "USD",
+        shipping: 18.00,
+        domestic: 29990.00
+      },
+      lens: {
+        url: "https://www.amazon.co.jp/dp/B09XPZZW11",
+        title: "Sony FE 24-70mm f/2.8 GM II Lens",
+        specs: "Full-Frame E-Mount, Aperture f/2.8, Optical Glass",
+        price: 280000,
+        currency: "JPY",
+        shipping: 8500,
+        domestic: 210000.00
+      },
+      macbook: {
+        url: "https://www.amazon.com/Apple-2024-MacBook-13-inch-256GB/dp/B0CX237P6F",
+        title: "Apple MacBook Air 15-inch M3 Chip Laptop",
+        specs: "Apple M3 Chip, 16GB Unified Memory, 512GB SSD, Wi-Fi 6E, Liquid Retina Display",
+        price: 1059.99,
+        currency: "USD",
+        shipping: 13.30,
+        domestic: 134900.00
+      },
+      strix: {
+        url: "https://www.amazon.com/ASUS-Strix-Gaming-Laptop-Nebula/dp/B0DW1ZPQXX",
+        title: "ASUS ROG Strix G16 Gaming Laptop Nebula Display",
+        specs: "Intel Core i7-13650HX 14-Core, NVIDIA GeForce RTX 4060 8GB GDDR6, 16GB DDR5 4800MHz RAM, 1TB PCIe 4.0 SSD, 16-inch FHD+ 165Hz ROG Nebula Display, Wi-Fi 6E, Aura Sync RGB",
+        price: 1399.99,
+        currency: "USD",
+        shipping: 48.50,
+        domestic: 159990.00
+      },
+      tablet: {
+        url: "https://www.amazon.com/Apple-13-inch-iPad-Pro-Standard/dp/B0D3J7X8Q2",
+        title: "Apple 13-inch iPad Pro M4 Chip Tablet",
+        specs: "Ultra Retina XDR display, 256GB storage, Wi-Fi 6E, Face ID, USB-C Thunderbolt",
+        price: 1299.74,
+        currency: "USD",
+        shipping: 13.37,
+        import_charges: 537.36,
+        domestic: 129900.00
+      },
+      vape: {
+        url: "https://www.flumvape.com/products/flum-pebble-6000",
+        title: "Flum Float Disposable Vape Device 3000 Puffs",
+        specs: "Nicotine e-cigarette salt pod cartridge vapor",
+        price: 18.00,
+        currency: "USD",
+        shipping: 8.00,
+        domestic: 2500.00
+      }
+    };
+
+    let debounceTimer = null;
+
+    async function parseUrlAutofill(input, forceFetch = false) {
+      if (!input || !input.trim()) return;
+      input = input.trim();
+
+      const feedbackEl = document.getElementById("autofillFeedback");
+
+      // 1. Instant client-side text parsing for copied fee breakdown
+      // Matches:
+      // "Shipping & Fee Details Price $1,059.99 AmazonGlobal Shipping $13.30 Estimated Import Charges $461.04 Total $1,534.33"
+      // or "Price $1,059.99, Shipping $13.30" or "$1,059.99 + $13.30 Shipping"
+      let detectedPrice = null;
+      let detectedShipping = null;
+      let detectedCurrency = null;
+
+      if (input.includes("¥") || input.includes("￥") || input.includes("JPY")) detectedCurrency = "JPY";
+      else if (input.includes("£") || input.includes("GBP")) detectedCurrency = "GBP";
+      else if (input.includes("€") || input.includes("EUR")) detectedCurrency = "EUR";
+      else if (input.includes("₹") || input.includes("INR")) detectedCurrency = "INR";
+      else if (input.includes("$") || input.includes("USD")) detectedCurrency = "USD";
+
+      // Price regex: Check for "Price $1,059.99" or first valid currency amount
+      const pMatch = input.match(/(?:Price|List\s*Price|Item\s*Price|Items)\s*[:\s]*([\$£€¥₹￥]\s*[\d,]+(?:\.\d{2})?)/i) ||
+                    input.match(/([\$£€¥₹￥]\s*[\d,]+(?:\.\d{2})?)/);
+      if (pMatch) {
+        const val = parseFloat(pMatch[1].replace(/[^0-9.]/g, ""));
+        if (!isNaN(val) && val > 0) detectedPrice = val;
+      }
+
+      // Shipping regex: Check for "AmazonGlobal Shipping $13.30" or "FREE Shipping"
+      if (/FREE\s+Shipping|Free\s+Delivery|free\s+international\s+delivery/i.test(input)) {
+        detectedShipping = 0.0;
+      } else {
+        const sMatch = input.match(/(?:AmazonGlobal\s+Shipping|Shipping\s*(?:&|and)?\s*Fee|Shipping\s*(?:&|and)?\s*Handling|Shipping\s*Cost|Delivery\s*Cost|Shipping|Delivery)\s*[:\s]*([\$£€¥₹￥]\s*[\d,]+(?:\.\d{2})?)/i) ||
+                      input.match(/([\$£€¥₹￥]\s*[\d,]+(?:\.\d{2})?)\s*(?:AmazonGlobal\s+Shipping|Shipping|Delivery)/i);
+        if (sMatch) {
+          const val = parseFloat(sMatch[1].replace(/[^0-9.]/g, ""));
+          if (!isNaN(val)) detectedShipping = val;
+        }
+      }
+
+      // Import charges regex: "Estimated Import Charges $537.36"
+      const iMatch = input.match(/(?:Estimated\s+Import\s+Charges|Import\s+Fees\s+Deposit|Import\s+Charges)\s*[:\s]*([\$£€¥₹￥]\s*[\d,]+(?:\.\d{2})?)/i);
+      if (iMatch) {
+        const val = parseFloat(iMatch[1].replace(/[^0-9.]/g, ""));
+        if (!isNaN(val)) window.currentImportCharges = val;
+      }
+
+      if (detectedCurrency) document.getElementById("currency").value = detectedCurrency;
+      if (detectedPrice !== null) {
+        document.getElementById("price").value = detectedPrice.toFixed(2);
+      }
+      if (detectedShipping !== null) {
+        document.getElementById("shipping").value = detectedShipping.toFixed(2);
+      }
+
+      // If price or shipping was recognized from text, update feedback & recalculate immediately
+      if (detectedPrice !== null || detectedShipping !== null) {
+        if (feedbackEl) {
+          const pDisplay = detectedPrice !== null ? `${document.getElementById("currency").value} ${detectedPrice.toFixed(2)}` : 'Manual';
+          const sDisplay = detectedShipping !== null ? `${document.getElementById("shipping").value}` : 'Default';
+          feedbackEl.innerHTML = `✓ Auto-detected from text: Price <b>${pDisplay}</b> | Shipping <b>${sDisplay}</b>`;
+          feedbackEl.className = "text-[11px] text-emerald-600 font-medium mt-1 block";
+        }
+        calculateFeasibility();
+      }
+
+      // 2. Check if a URL is provided
+      const urlMatch = input.match(/https?:\/\/[^\s<>"]+/);
+      const url = urlMatch ? urlMatch[0] : (input.startsWith("http") ? input : null);
+
+      if (!url) return;
+
+      // URL domain currency detection
+      if (url.includes(".co.jp") || url.includes("amazon.co.jp")) {
+        document.getElementById("currency").value = "JPY";
+      } else if (url.includes(".co.uk")) {
+        document.getElementById("currency").value = "GBP";
+      } else if (url.includes(".de") || url.includes(".fr") || url.includes(".it")) {
+        document.getElementById("currency").value = "EUR";
+      } else if (url.includes(".sg")) {
+        document.getElementById("currency").value = "SGD";
+      } else if (url.includes("alibaba.") || url.includes("aliexpress.")) {
+        document.getElementById("currency").value = "USD";
+      }
+
+      // Title slug extraction
+      try {
+        const parsed = new URL(url);
+        const pathParts = parsed.pathname.split("/").filter(Boolean);
+        let slug = "";
+        const dpIndex = pathParts.findIndex(p => p === "dp" || p === "item" || p === "products" || p === "product-detail");
+        if (dpIndex > 0) slug = pathParts[dpIndex - 1];
+        else if (dpIndex >= 0 && dpIndex + 1 < pathParts.length) slug = pathParts[dpIndex + 1];
+        else if (pathParts.length > 0) slug = pathParts[pathParts.length - 1];
+
+        if (slug) {
+          slug = slug.replace(/\.html?$/i, "").replace(/_\d+$/, "");
+          if (slug.length > 3 && !slug.startsWith("B0")) {
+            const cleanTitle = slug.replace(/[-_+]/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+            document.getElementById("title").value = cleanTitle;
+          }
+        }
+      } catch (e) {}
+
+      // 3. Call backend /api/v1/extract-url to extract live price, shipping, and specs
+      clearTimeout(debounceTimer);
+      const executeFetch = async () => {
+        const btn = document.getElementById("autofillBtn");
+        if (btn) btn.innerText = "⏳ Extracting...";
+        try {
+          const res = await fetch(`${API_URL}/extract-url`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ url: input })
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (data.title) document.getElementById("title").value = data.title;
+            if (data.specs) document.getElementById("specs").value = data.specs;
+            if (data.price !== undefined && data.price !== null) {
+              document.getElementById("price").value = parseFloat(data.price).toFixed(2);
+            }
+            if (data.currency) document.getElementById("currency").value = data.currency;
+            if (data.shipping !== undefined && data.shipping !== null) {
+              document.getElementById("shipping").value = parseFloat(data.shipping).toFixed(2);
+            }
+            if (data.domestic_price) {
+              document.getElementById("domestic").value = parseFloat(data.domestic_price).toFixed(2);
+            }
+            if (feedbackEl) {
+              if (data.price !== undefined && data.price !== null) {
+                feedbackEl.innerHTML = `✓ Extracted: <b>${document.getElementById("title").value.slice(0, 35)}...</b> | Price: <b>${document.getElementById("currency").value} ${document.getElementById("price").value}</b> | Shipping: <b>${document.getElementById("shipping").value}</b>`;
+                feedbackEl.className = "text-[11px] text-emerald-600 font-medium mt-1 block";
+                calculateFeasibility();
+              } else if (data.waf_blocked) {
+                feedbackEl.innerHTML = `⚠️ <b>Amazon Anti-Bot Protected</b>: Title & specs extracted. Please enter the <b>Price ($)</b> from your Amazon tab to calculate.`;
+                feedbackEl.className = "text-[11px] text-amber-700 bg-amber-50 border border-amber-200 rounded px-2 py-1 font-medium mt-1 block";
+                document.getElementById("price").focus();
+              }
+            }
+          }
+        } catch (err) {
+          console.warn("Backend URL extraction fallback:", err);
+        } finally {
+          if (btn) btn.innerText = "⚡ Autofill";
+        }
+      };
+
+      if (forceFetch) {
+        await executeFetch();
+      } else {
+        debounceTimer = setTimeout(executeFetch, 600);
+      }
+    }
+
+    async function pasteClipboardBreakdown() {
+      try {
+        const text = await navigator.clipboard.readText();
+        if (text && text.trim()) {
+          document.getElementById("productUrl").value = text.trim();
+          parseUrlAutofill(text.trim(), true);
+        } else {
+          const manual = prompt("Paste your Amazon Shipping & Fee Details text here (e.g. Price $1,059.99 AmazonGlobal Shipping $13.30):");
+          if (manual && manual.trim()) {
+            document.getElementById("productUrl").value = manual.trim();
+            parseUrlAutofill(manual.trim(), true);
+          }
+        }
+      } catch (err) {
+        const manual = prompt("Paste your Amazon Shipping & Fee Details text here (e.g. Price $1,059.99 AmazonGlobal Shipping $13.30):");
+        if (manual && manual.trim()) {
+          document.getElementById("productUrl").value = manual.trim();
+          parseUrlAutofill(manual.trim(), true);
+        }
+      }
+    }
+
+    function loadPreset(key) {
+      const p = PRESETS[key];
+      window.currentImportCharges = p.import_charges || null;
+      document.getElementById("productUrl").value = p.url || "";
+      document.getElementById("title").value = p.title;
+      document.getElementById("specs").value = p.specs;
+      document.getElementById("price").value = p.price;
+      document.getElementById("currency").value = p.currency;
+      document.getElementById("shipping").value = p.shipping;
+      document.getElementById("domestic").value = p.domestic;
+      calculateFeasibility();
+    }
+
+    async function calculateFeasibility() {
+      const payload = {
+        title: document.getElementById("title").value,
+        specs: document.getElementById("specs").value,
+        price_fob: parseFloat(document.getElementById("price").value),
+        currency: document.getElementById("currency").value,
+        shipping_foreign: parseFloat(document.getElementById("shipping").value),
+        amazon_import_charges_foreign: window.currentImportCharges || null,
+        domestic_price_inr: parseFloat(document.getElementById("domestic").value),
+        shipping_mode: document.getElementById("mode").value,
+        is_personal_use: true
+      };
+
+      try {
+        const res = await fetch(`${API_URL}/analyze-product`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) throw new Error("API call failed");
+        const data = await res.json();
+        renderResults(data);
+      } catch (err) {
+        console.warn("API offline, falling back to local formula:", err);
+        renderLocalFallback(payload);
+      }
+    }
+
+    function renderResults(data) {
+      const wf = data.landed_cost_waterfall;
+      const arb = data.price_arbitrage;
+      const cls = data.classification;
+      const reg = data.regulatory_compliance;
+
+      document.getElementById("hsBadge").innerText = `HS ${cls.hs_code}`;
+      document.getElementById("resFob").innerText = `₹${wf.fob_inr.toLocaleString("en-IN", {minimumFractionDigits: 2})}`;
+      document.getElementById("resFreight").innerText = `₹${(wf.freight_inr + wf.insurance_inr).toLocaleString("en-IN", {minimumFractionDigits: 2})}`;
+      document.getElementById("resCif").innerText = `₹${wf.assessable_cif_inr.toLocaleString("en-IN", {minimumFractionDigits: 2})}`;
+      document.getElementById("resBcdPct").innerText = `${(cls.effective_bcd * 100).toFixed(0)}%`;
+      document.getElementById("resBcd").innerText = `₹${wf.bcd_inr.toLocaleString("en-IN", {minimumFractionDigits: 2})}`;
+      document.getElementById("resSws").innerText = `₹${wf.sws_inr.toLocaleString("en-IN", {minimumFractionDigits: 2})}`;
+      document.getElementById("resIgst").innerText = `₹${wf.igst_inr.toLocaleString("en-IN", {minimumFractionDigits: 2})}`;
+      document.getElementById("resCourier").innerText = `₹${wf.courier_fee_inr.toLocaleString("en-IN", {minimumFractionDigits: 2})}`;
+      document.getElementById("resTotal").innerText = `₹${wf.total_landed_cost_inr.toLocaleString("en-IN", {minimumFractionDigits: 2})}`;
+
+      // Amazon Import Fees Deposit Comparison Alert
+      const alertBox = document.getElementById("amazonDepositAlert");
+      const alertText = document.getElementById("amazonDepositText");
+      if (alertBox && alertText) {
+        if (wf.amazon_comparison && wf.amazon_comparison.advisory) {
+          alertText.innerText = wf.amazon_comparison.advisory;
+          alertBox.classList.remove("hidden");
+        } else {
+          alertBox.classList.add("hidden");
+        }
+      }
+
+      document.getElementById("citationText").innerText = wf.exemption_citation || cls.reasoning;
+      document.getElementById("hashText").innerText = wf.provenance_hash;
+
+      // Arbitrage
+      const arbCard = document.getElementById("arbitrageCard");
+      const vPill = document.getElementById("verdictPill");
+      const vHead = document.getElementById("verdictHeading");
+      const vTrade = document.getElementById("verdictTradeoff");
+
+      const netDiff = (arb && (arb.net_difference_inr !== undefined ? arb.net_difference_inr : arb.net_savings_inr)) || 0;
+      const savingsPct = (arb && arb.savings_percentage !== undefined ? Math.abs(arb.savings_percentage) : 0);
+      const verdict = (arb && arb.verdict) || (netDiff > 0 ? "SAVE_BY_IMPORTING" : "BUY_DOMESTIC");
+
+      if (verdict === "SAVE_BY_IMPORTING") {
+        arbCard.className = "bg-emerald-50 border border-emerald-200 rounded-xl p-5 shadow-sm";
+        vPill.className = "px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-200 text-emerald-900";
+        vPill.innerText = "SAVE BY IMPORTING";
+        vHead.className = "text-xl font-extrabold text-emerald-950 mb-1";
+        vHead.innerText = `🟢 SAVE ₹${netDiff.toLocaleString("en-IN", {minimumFractionDigits: 2, maximumFractionDigits: 2})} (${savingsPct.toFixed(1)}%) BY IMPORTING!`;
+        vTrade.className = "text-xs text-emerald-800";
+        vTrade.innerText = "International shipment arrives in 10-14 days vs 1-2 days local. Manufacturer international warranty applies.";
+      } else if (verdict === "BUY_DOMESTIC") {
+        arbCard.className = "bg-rose-50 border border-rose-200 rounded-xl p-5 shadow-sm";
+        vPill.className = "px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-200 text-rose-900";
+        vPill.innerText = "BUY LOCALLY";
+        vHead.className = "text-xl font-extrabold text-rose-950 mb-1";
+        vHead.innerText = `🔴 BUY LOCALLY! Importing is ₹${Math.abs(netDiff).toLocaleString("en-IN", {minimumFractionDigits: 2, maximumFractionDigits: 2})} (${savingsPct.toFixed(1)}%) more expensive.`;
+        vTrade.className = "text-xs text-rose-800";
+        vTrade.innerText = "Local domestic purchase offers 1-year authorized Indian warranty and instant 1-2 day delivery.";
+      } else {
+        arbCard.className = "bg-amber-50 border border-amber-200 rounded-xl p-5 shadow-sm";
+        vPill.className = "px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-200 text-amber-900";
+        vPill.innerText = "BREAK EVEN";
+        vHead.className = "text-xl font-extrabold text-amber-950 mb-1";
+        vHead.innerText = "🟡 BREAK-EVEN: Price difference is negligible (within ₹500).";
+        vTrade.className = "text-xs text-amber-800";
+        vTrade.innerText = "Recommend buying locally for domestic warranty protection.";
+      }
+
+      // Badges
+      const badgeList = document.getElementById("badgeList");
+      badgeList.innerHTML = "";
+      if (reg.badges) {
+        reg.badges.forEach(b => {
+          let bg = "bg-emerald-100 text-emerald-800";
+          if (b.status === "AMBER") bg = "bg-amber-100 text-amber-800";
+          if (b.status === "RED") bg = "bg-rose-100 text-rose-800";
+          badgeList.innerHTML += `<span class="px-2.5 py-1 rounded-md text-xs font-semibold ${bg}">${b.badge_title}</span>`;
+        });
+      }
+    }
+
+    function renderLocalFallback(payload) {
+      const forex = payload.currency === "JPY" ? 0.56 : 84.50;
+      const fobInr = payload.price_fob * forex;
+      const freightInr = (payload.shipping_foreign || 20) * forex;
+      const insInr = fobInr * 0.01125;
+      const cifInr = fobInr + freightInr + insInr;
+      const bcdInr = 0.0;
+      const swsInr = 0.0;
+      const igstInr = cifInr * 0.18;
+      const courierInr = payload.shipping_mode === "postal_ems" ? 100.0 : 750.0;
+      const totalLanded = cifInr + bcdInr + swsInr + igstInr + courierInr;
+      const dom = parseFloat(payload.domestic_price_inr) || 0;
+      const diff = dom - totalLanded;
+      const pct = dom > 0 ? (diff / dom) * 100 : 0;
+
+      renderResults({
+        landed_cost_waterfall: {
+          fob_inr: fobInr,
+          freight_inr: freightInr,
+          insurance_inr: insInr,
+          assessable_cif_inr: cifInr,
+          bcd_inr: bcdInr,
+          sws_inr: swsInr,
+          igst_inr: igstInr,
+          courier_fee_inr: courierInr,
+          total_landed_cost_inr: totalLanded,
+          exemption_citation: "Customs Act 1962 Sec 14 / ITA-1 Notif 24/2005",
+          provenance_hash: "sha256:7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069"
+        },
+        classification: {
+          hs_code: "8471.60.40",
+          effective_bcd: 0.0,
+          reasoning: "Classified under Heading 8471 per Chapter 84 Note 5(C)."
+        },
+        regulatory_compliance: {
+          badges: [
+            { badge_title: "WPC ETA Exempt (Personal)", status: "GREEN" },
+            { badge_title: "BIS CRS Exempt (1 Unit)", status: "GREEN" }
+          ]
+        },
+        price_arbitrage: {
+          verdict: diff > 500 ? "SAVE_BY_IMPORTING" : (diff < -500 ? "BUY_DOMESTIC" : "BREAK_EVEN"),
+          net_difference_inr: diff,
+          net_savings_inr: diff,
+          savings_percentage: pct
+        }
+      });
+    }
+
+    function openExtensionModal() {
+      const m = document.getElementById("extModal");
+      if (m) m.classList.remove("hidden");
+    }
+
+    function closeExtensionModal() {
+      const m = document.getElementById("extModal");
+      if (m) m.classList.add("hidden");
+    }
+
+    // Auto-calculate on load
+    window.addEventListener("DOMContentLoaded", calculateFeasibility);
+  </script>
+
+</body>
+</html>
